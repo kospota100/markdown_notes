@@ -4,6 +4,18 @@
 
 #### 1. 確認 SSH service 是否正在執行
 
+在 Termux 上，可使用以下的指令確認 SSH 是否在執行
+
+```bash
+if pgrep ssh > /dev/null; then
+ echo "ssh Running"; else
+ echo "ssh Not running"
+fi
+```
+###### from [How do I view the status of a service : termux](https://www.reddit.com/r/termux/comments/cd8u5h/comment/etscyc0/?context=3)
+
+在其他 Linux 系統上，則可使用 `service ssh status` 確認 SSH 是否在執行
+
 #### 2. 確認 Host 端的 IP 位址與使用者名稱
 
    - 使用 `ip -4 addr` 查詢主機上 `eth0` 中的 IP Address
@@ -15,6 +27,8 @@
 #### 3. 如果 SSH service 並未執行，可以輸入 `sshd` 來直接啟用，或使用 `sshd -d` 在偵錯模式下啟用
 
    - 若已經存在 SSH 連線，並想要關閉時，可以使用 `pkill sshd` 停止原本的 SSH service
+
+   - 若想要關閉多個 SSH 連線中的特定連接埠時，可以使用 `ps ax | grep "sshd -p [PORT]"` 或 `ps au | grep "sshd"` 找出要關閉的 SSH 程序的 PID，再使用 `kill [PID]` 來停止 SSH 程序
 
    - 若需要開啟新的 SSH 連線時，可以使用 `sshd -p [NEW_PORT]` 在另一個 port 開啟 SSH service
 
@@ -38,6 +52,7 @@ ssh -fN -R 2222:localhost:22 B_user@B_ip_address
 ```
 
 之後便可在主機 B 上使用以下指令連線至主機 A。
+
 ```bash
 ssh -p 2222 A_user@localhost
 ```
